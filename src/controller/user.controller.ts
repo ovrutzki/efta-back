@@ -8,7 +8,7 @@ import dotenv from "dotenv"
 import config from "../config/config";
 
 
-
+dotenv.config()
 export const registerNewUser = async (req: Request, res: Response) => {
   try {
     // user inputs
@@ -17,9 +17,11 @@ export const registerNewUser = async (req: Request, res: Response) => {
     if (!(email && password && name && lastName && code)) {
       res.status(400).send("All input is required");
     }
+console.log(typeof process.env.ADMIN_CODE);
+console.log(typeof code);
 
     if (code === process.env.ADMIN_CODE) {
-       return role="admin";
+        role="admin";
    } else {
      const course = await CourseModel.findOne({courseCode:code}) || false;
      // checking if this student is approved for this course
@@ -47,7 +49,7 @@ export const registerNewUser = async (req: Request, res: Response) => {
       phone: phone,
       email: email,
       password: encryptedPassword,
-      courseCode: code,
+      courseCode: role==="admin" ? "" : code,
       role: role,
     };
     registerUser(user);

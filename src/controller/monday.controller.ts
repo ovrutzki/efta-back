@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Request, response, Response } from "express";
 import { IDays } from "../models/days.model";
-import { pushingDaysArrayToDb } from "../services/days.service";
+import { deleteAllDays, pushingDaysArrayToDb } from "../services/days.service";
 import { getMondayToken } from "./course.controller";
 
 export const getAllData = async (req: Request, res: Response) => {
@@ -93,8 +93,8 @@ export const getAllData = async (req: Request, res: Response) => {
           daysArray.push(singleDay);
         }
       }
-      
-      pushingDaysArrayToDb(daysArray)
+      deleteAllDays();
+      pushingDaysArrayToDb(daysArray);
     } catch (error) {
       console.log(error);
     }

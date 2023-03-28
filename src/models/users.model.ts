@@ -1,12 +1,15 @@
 import { Schema, model } from "mongoose";
 import mongoose from "mongoose";
+import dotenv from "dotenv"
+
+dotenv.config()
 
 export interface IUser {
   name: string;
   lastName: string;
   email: string;
   password: string;
-  phone: number;
+  phone: string;
   role: string;
   UserNotification?: {};
   AdminNotification?: {};
@@ -19,7 +22,7 @@ export const userSchema = new Schema<IUser>({
   lastName: { type: String,lowercase: true },
   password: { type: String },
   email: { type: String, lowercase: true, unique: true },
-  phone: { type: Number },
+  phone: { type: String },
   role: { type: String, default: "user" },
   UserNotification: { type: Object },
   AdminNotification: { type: Object },
