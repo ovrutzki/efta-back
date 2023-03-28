@@ -1,9 +1,6 @@
 {
-  "watch": ["app"],
+  "watch": ["src"],
   "ext": "ts",
-  "ignore": ["*.test.ts"],
-  "delay": "3",
-  "execMap": {
-    "ts": "ts-node"
+  "exec": "ts-node src/app.ts"
   }
-}
+

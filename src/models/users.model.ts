@@ -15,15 +15,15 @@ export interface IUser {
 }
 
 export const userSchema = new Schema<IUser>({
-  name: { type: String },
-  lastName: { type: String },
+  name: { type: String,lowercase: true },
+  lastName: { type: String,lowercase: true },
   password: { type: String },
   email: { type: String, lowercase: true, unique: true },
   phone: { type: Number },
   role: { type: String, default: "user" },
   UserNotification: { type: Object },
   AdminNotification: { type: Object },
-  course: { type: String },
+  course: { type: String, lowercase: true },
   attendance: [{ date: { type: Date }, status: { type: Number } }],
 });
 

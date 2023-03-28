@@ -4,7 +4,7 @@ import dotenv from "dotenv"
 dotenv.config()
 const uri = process.env.TOKEN_SECRET;
 
-const dbName = "efta";
+const dbName = "eftadb";
 const user = process.env.MONGO_USERNAME;
 const mongoPassword = process.env.MONGO_PASSWORD;
 const mongoHost = process.env.MONGO_HOST

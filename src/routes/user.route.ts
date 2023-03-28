@@ -10,5 +10,8 @@ userRouter.post('/signUp',registerNewUser );
 
 userRouter.post('/logIn',logInUser );
 
+
+
+
 export default userRouter;
 

@@ -24,7 +24,7 @@ export const registerNewUser = async (req: Request, res: Response) => {
       return res.status(409).send("User Already Exist. Please Login");
     }
     // checking if this student is approved for this course
-    if (!usersApproved.find((user) => user.users === email)) {
+    if (!usersApproved.find((user) => user.expectedUsers === email)) {
       return res.status(409).send("User Not approved for this course");
     }
     // hashing the user password
@@ -94,5 +94,6 @@ export const logInUser = async (req: Request, res: Response) => {
       });
   }
 };
+
 
 
