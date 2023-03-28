@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Request, response, Response } from "express";
+import { Request, Response } from "express";
 import { IDays } from "../models/days.model";
 import { deleteAllDays, pushingDaysArrayToDb } from "../services/days.service";
 import { getMondayToken } from "./course.controller";
@@ -27,10 +27,10 @@ export const getAllData = async (req: Request, res: Response) => {
           Authorization: `${mondaySecretToken}`,
         },
       })
-        .then((result) => {
+        .then((result:any) => {
           return result.data.data.boards;
         })
-        .catch((error) => {
+        .catch((error:any) => {
           console.log(error);
         });
       return theData;
