@@ -58,7 +58,9 @@ export const getAllData = async (req: Request, res: Response) => {
         const phoneNumArray = item.column_values[19].text.split("").filter((e:string)=> e!== "-")
         const fiveIndex = phoneNumArray.findIndex((e:string)=> e==='5')
         const phoneTransform = phoneNumArray.slice(fiveIndex).join("");
-        console.log(phoneTransform);
+        
+        // changing the hours format:
+        const hoursArray = item.column_values[7].text.split('-');
         
         const singleDay: IDays = {
           events: [{ eventName: item.name, link: item.column_values[10].text }],
@@ -70,7 +72,7 @@ export const getAllData = async (req: Request, res: Response) => {
               ? ""
               : item.column_values[0].text,
           address: item.column_values[18].text,
-          hours: item.column_values[7].text,
+          hours: hoursArray,
           dailyClassRoom: item.column_values[15].text,
           googleMeet: item.column_values[16].text,
           guestLecturer:
@@ -91,6 +93,7 @@ export const getAllData = async (req: Request, res: Response) => {
           daysArray.push(singleDay);
         }
       }
+      
       pushingDaysArrayToDb(daysArray)
     } catch (error) {
       console.log(error);

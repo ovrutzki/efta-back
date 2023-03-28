@@ -22,7 +22,7 @@ export const daysSchema = new Schema<IDays>({
   mentorName: {type:String},
   mentorPhone: {type:String},
   address:{type:String},
-  hours:{type:String},
+  hours:[String],
   attendance:[{studentName:{type:String}, status:{type:Number}}],
   dailyClassRoom:{type:String},
   googleMeet:{type:String},
