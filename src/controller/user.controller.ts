@@ -12,25 +12,27 @@ import config from "../config/config";
 export const registerNewUser = async (req: Request, res: Response) => {
   try {
     // user inputs
-    const { name, lastName, email, password, phone, course, userCode, adminCode } = req.body;
+    const { name, lastName, email, password, phone, code } = req.body;
     let role = "user"
-    if (!(email && password && name && lastName && course && userCode)) {
+    if (!(email && password && name && lastName && code)) {
       res.status(400).send("All input is required");
     }
 
-    const courseInfo = await CourseModel.findOne({courseCode:userCode});
-    const userRegistered = await UserModel.findOne({ email: email });
-    // checking if there is a user with this mail
-    if (userRegistered) {
-      return res.status(409).send("User Already Exist. Please Login");
-    }
-    // checking if this student is approved for this course
-    if (courseInfo?.courseCode !== userCode) {
-      return res.status(409).send("User Not approved for this course");
-    }
-    if (adminCode === process.env.ADMIN_CODE) {
-       role="admin";
-    }
+    if (code === process.env.ADMIN_CODE) {
+       return role="admin";
+   } else {
+     const course = await CourseModel.findOne({courseCode:code}) || false;
+     // checking if this student is approved for this course
+     if (!course) {
+       return res.status(409).send("User Not approved for this course");
+     }
+      const userRegistered = await UserModel.findOne({ email: email });
+      // checking if there is a user with this mail
+      if (userRegistered) {
+        return res.status(409).send("User Already Exist. Please Login");
+      }
+   }
+   
 
 
     // hashing the user password
@@ -45,7 +47,7 @@ export const registerNewUser = async (req: Request, res: Response) => {
       phone: phone,
       email: email,
       password: encryptedPassword,
-      course: course,
+      courseCode: code,
       role: role,
     };
     registerUser(user);
@@ -77,7 +79,7 @@ export const logInUser = async (req: Request, res: Response) => {
         {
             email: user.email,
             role: user.role,
-            course: user.course
+            courseCode: user.courseCode
           },
          config.secretKey ,
         {

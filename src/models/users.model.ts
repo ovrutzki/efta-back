@@ -10,7 +10,7 @@ export interface IUser {
   role: string;
   UserNotification?: {};
   AdminNotification?: {};
-  course: string;
+  courseCode: string;
   // attendance?: [{ date: Date; status: number }];
 }
 
@@ -23,7 +23,7 @@ export const userSchema = new Schema<IUser>({
   role: { type: String, default: "user" },
   UserNotification: { type: Object },
   AdminNotification: { type: Object },
-  course: { type: String, lowercase: true },
+  courseCode: { type: String},
   // attendance: [{ date: { type: Date }, status: { type: Number } }],
 });
 
