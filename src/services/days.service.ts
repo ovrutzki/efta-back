@@ -10,3 +10,15 @@ export const pushingDaysArrayToDb = async (daysArray: IDays[]) => {
       throw err;
     }
   };
+
+  
+  export const getDays = async () => {
+    try {
+      const days = await DaysModel.find();
+      return days;
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  };
+  
