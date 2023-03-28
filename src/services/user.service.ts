@@ -10,4 +10,4 @@ export const registerUser = async(user:IUser)=>{
       console.log(err);
       throw err;
     }
-}
+} 

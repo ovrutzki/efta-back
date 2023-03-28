@@ -11,7 +11,7 @@ export interface IUser {
   UserNotification?: {};
   AdminNotification?: {};
   course: string;
-  attendance?: [{ date: Date; status: number }];
+  // attendance?: [{ date: Date; status: number }];
 }
 
 export const userSchema = new Schema<IUser>({
@@ -24,7 +24,7 @@ export const userSchema = new Schema<IUser>({
   UserNotification: { type: Object },
   AdminNotification: { type: Object },
   course: { type: String, lowercase: true },
-  attendance: [{ date: { type: Date }, status: { type: Number } }],
+  // attendance: [{ date: { type: Date }, status: { type: Number } }],
 });
 
 export const UserModel = mongoose.model<IUser>("users", userSchema);

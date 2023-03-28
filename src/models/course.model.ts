@@ -9,6 +9,7 @@ export interface ICourse {
   admin: string;
   classRoomLink: string;
   mondayData: string;
+  courseCode:string;
 }
 
 export const courseSchema = new Schema<ICourse>({
@@ -18,7 +19,8 @@ export const courseSchema = new Schema<ICourse>({
   courseName: { type: String ,lowercase: true},
   admin: { type: String },
   classRoomLink: { type: String },
-  mondayData: {type:String}
+  mondayData: {type:String},
+  courseCode:{type:String}
 });
 
 export const CourseModel = mongoose.model<ICourse>("course", courseSchema);
