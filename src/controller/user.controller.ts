@@ -70,6 +70,20 @@ export const logInUser = async (req: Request, res: Response) => {
   try {
     const user = await UserModel.findOne({ email: email });
     const userToReturn = await UserModel.findOne({ email: email }).select('-password -phone');
+    
+
+    let haveCourseOrNot = "im a user"
+    console.log('test ',(await CourseModel.findOne({admin:email})));
+
+// check if the user is admin:
+    if(user?.role === "admin"){
+       if(await CourseModel.findOne({admin:email})){
+         haveCourseOrNot= "have course"
+       } else {
+        haveCourseOrNot= "I m admin and have no course yet"
+       }
+    }
+// check if the admin have a course in the data base
 // check that the user insert all inputs
     if (!(email && password)) {
         res.status(400).send("All input is required");
@@ -89,11 +103,12 @@ export const logInUser = async (req: Request, res: Response) => {
         }
       );
 
-      // save user token
+      // return to front user token
       return res.status(200).json({
         message: "Auth successful",
         token,
         user: userToReturn,
+        courseStatus:haveCourseOrNot,
       });
     }
     res.status(400).send("Invalid Credentials");

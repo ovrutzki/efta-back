@@ -1,5 +1,6 @@
 import express, {  Request, Response } from "express";
-import { addMondayData } from "../controller/course.controller";
+import { addCourseData } from "../controller/course.controller";
+import { authCheck } from "../middleware/authCheck";
 // var cookieParser = require("cookie-parser");
 var querystring = require("querystring");
 var request = require("request");
@@ -14,11 +15,8 @@ const redirect_uri = "http://localhost:3000/admin";
 
 const courseRouter = express.Router();
 
-// courseRouter.get("/", function(req,res){
 
-// })
-
-courseRouter.post("/addingMonday", addMondayData);
+courseRouter.post("/addingMonday",authCheck('admin'), addCourseData);
 
 
 

@@ -103,7 +103,7 @@ export const getAllData = async (req: Request, res: Response) => {
           daysArray.push(singleDay);
         }
       }
-      // deleteAllDays();
+      
       pushingDaysArrayToDb(daysArray);
     } catch (error) {
       console.log(error);

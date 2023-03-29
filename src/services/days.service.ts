@@ -1,4 +1,5 @@
 import { IAttendance } from "../interface";
+import { CourseModel } from "../models/course.model";
 import { DaysModel, IDays } from "../models/days.model";
 
 export const deleteAllDays = async () => {
@@ -13,15 +14,19 @@ export const deleteAllDays = async () => {
 
 export const pushingDaysArrayToDb = async (daysArray: IDays[]) => {
   console.log("11111111111111");
-  
   try {
-    if ( (await DaysModel.find()).length > 0) {
-      console.log("2222222");
-      const _daysArray = DaysModel.updateMany({$set:daysArray})
-      return _daysArray;
+    for(let i = 0; i < daysArray.length; i++){
+      if(await DaysModel.findOne({date:daysArray[i].date})){
+        console.log("if",daysArray[i].date);
+        const _existingDay = DaysModel.updateOne({date:daysArray[i].date},{$set:daysArray[i]});
+        // return _existingDay
+      } else {
+        console.log( "else",daysArray[i].date);
+        const _singleDay = new DaysModel(daysArray[i]);
+        _singleDay.save();
+    //  return _singleDay;
+      }
     }
-    const _daysArray = DaysModel.insertMany(daysArray);
-    return _daysArray;
   } catch (err) {
     console.log(err);
     throw err;
@@ -32,6 +37,16 @@ export const getDays = async () => {
   try {
     const days = await DaysModel.find();
     return days;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
+export const getSingleDay = async (dayDate:string) => {
+  try {
+    const day = await DaysModel.findOne({date:dayDate});
+    return day;
   } catch (err) {
     console.log(err);
     throw err;

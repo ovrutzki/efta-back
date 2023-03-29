@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import config from "../config/config";
 import { ICourse } from "../models/course.model";
 
-export const addMondayData = async (req: Request, res: Response) => {
+export const addCourseData = async (req: Request, res: Response) => {
   const {
     client_id,
     client_secret,

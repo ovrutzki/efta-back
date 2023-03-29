@@ -16,7 +16,7 @@ export interface IDays {
 }
 
 export const daysSchema = new Schema<IDays>({
-  dayNumber: { type: Number},
+  dayNumber: { type: Number, default:1},
   date: { type: String },
   events: [{eventName:{type:String}, link:{type:String}}],
   mentorName: {type:String},
