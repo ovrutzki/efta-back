@@ -1,13 +1,26 @@
-import { CourseModel } from "../models/course.model";
+import { CourseModel, ICourse } from "../models/course.model";
 
-export const addingMondayData = async (name: string, inputData: any) => {
+export const courseCreation = async (
+  courseCode: string,
+  courseData: ICourse
+) => {
   try {
-    const _mondayData = await CourseModel.findOneAndUpdate(
-      { courseName: name },
-      { $set: { mondayData: inputData } }
-    );
-    if (_mondayData) {
-      return _mondayData;
+    const courseArray = await CourseModel.find({ courseCode: courseCode });
+
+    if (courseArray.length > 0) {
+      console.log("if", courseData);
+      const _courseData = await CourseModel.findOneAndUpdate(
+        { courseCode: courseCode },
+        { $set:  courseData  }
+      );
+      if (_courseData) {
+        return _courseData;
+      }
+    } else {
+      console.log("else", courseData);
+      const _courseData = new CourseModel(courseData);
+         _courseData.save();
+      return _courseData;
     }
   } catch (err) {
     console.log(err);
@@ -15,9 +28,9 @@ export const addingMondayData = async (name: string, inputData: any) => {
   }
 };
 
-export const getTokenFromDB = async () => {
+export const getTokenFromDB = async (corseCode:string) => {
   try {
-    const course = await CourseModel.findOne({ courseName: "moveobootcamp" });
+    const course = await CourseModel.findOne({ courseCode: corseCode });
     const token = course && course.mondayData;
     return token;
   } catch (err) {

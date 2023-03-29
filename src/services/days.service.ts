@@ -12,9 +12,12 @@ export const deleteAllDays = async () => {
 };
 
 export const pushingDaysArrayToDb = async (daysArray: IDays[]) => {
+  console.log("11111111111111");
+  
   try {
-    if (await DaysModel.find()) {
-      const _daysArray = DaysModel.updateMany(daysArray)
+    if ( (await DaysModel.find()).length > 0) {
+      console.log("2222222");
+      const _daysArray = DaysModel.updateMany({$set:daysArray})
       return _daysArray;
     }
     const _daysArray = DaysModel.insertMany(daysArray);

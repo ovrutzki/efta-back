@@ -5,11 +5,21 @@ import { deleteAllDays, pushingDaysArrayToDb } from "../services/days.service";
 import { getMondayToken } from "./course.controller";
 
 export const getAllData = async (req: Request, res: Response) => {
-  const token = await getMondayToken(res);
-  const tokenInCoded =
-    token && JSON.parse(Buffer.from(token.split(".")[1], "base64").toString());
-  const mondaySecretToken = tokenInCoded.mondayToken;
-  const boardId = tokenInCoded.boardId
+  let UserToken = req.headers.authorization?.split(' ')[1] ;
+  const userTokenDecoded =UserToken && JSON.parse(Buffer.from(UserToken.split('.')[1], 'base64').toString());
+  const corseCode = userTokenDecoded.courseCode
+  // taking the board Id and the secret monday token:
+  console.log("corseCode-",corseCode);
+  
+  const mondayDbToken = await getMondayToken(corseCode,res);
+  console.log("mondayDbToken", mondayDbToken);
+  
+  const tokenDeCoded =
+  mondayDbToken && JSON.parse(Buffer.from(mondayDbToken.split(".")[1], "base64").toString());
+  
+  console.log("tokenDeCoded", tokenDeCoded);
+  const mondaySecretToken = tokenDeCoded.mondayToken;
+  const boardId = tokenDeCoded.boardId
   //  sending a request to get course data with the monday token to monday api
   const mondayAuthAndData = async () => {
     try {
@@ -102,12 +112,3 @@ export const getAllData = async (req: Request, res: Response) => {
   setTimeout(sendingDataToDB, 3000);
 };
 
-// mondayData.map((item: any) => {
-//     if (item.column_values[4].title === "Date") {
-//       const itemDay = item.column_values[4].text.split("-" || " ");
-//       const subjectStart = `${itemDay[2]}-${itemDay[1]}-${itemDay[0]}`;
-//       const subjectEnd = `${itemDay[5]}-${itemDay[4]}-${itemDay[3]}`;
-//       const subjectDays = itemDay[5] - itemDay[2] + 1;
-
-//     }
-//   });
