@@ -52,7 +52,7 @@ export const getAllData = async (req: Request, res: Response) => {
         let item = mondayData[i];
         // changing the date format:
         const dateAsArray = (item.column_values[4].text).split('-')
-        const dateTransform = `${dateAsArray[2]}-${dateAsArray[1]}-${dateAsArray[0]}`
+        const dateTransform = `${dateAsArray[1]}-${dateAsArray[2]}-${dateAsArray[0]}`
 
         // changing the phone format:
         const phoneNumArray = item.column_values[19].text.split("").filter((e:string)=> e!== "-")
