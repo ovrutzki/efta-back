@@ -36,9 +36,13 @@ export const pushingDaysArrayToDb = async (daysArray: IDays[]) => {
 
   export const updateAttendance = async (date:string, userEmail:string, status:number ) => {
     try {
-      const _attendance = await DaysModel.findOneAndUpdate({date:date},{$push:{attendance:{studentName:userEmail,status:status}}});
-      if (_attendance) {
-        return _attendance;
+      const specificDay = await DaysModel.findOne({date:date});
+      if(specificDay?.attendance?.find((stu) => stu.studentName === userEmail)){
+        
+      }
+      
+      if (specificDay) {
+        return specificDay;
       }
     } catch (err) {
       console.log(err);
