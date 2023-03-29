@@ -9,7 +9,7 @@ export const getAllData = async (req: Request, res: Response) => {
   const tokenInCoded =
     token && JSON.parse(Buffer.from(token.split(".")[1], "base64").toString());
   const mondaySecretToken = tokenInCoded.mondayToken;
-
+  const boardId = tokenInCoded.boardId
   //  sending a request to get course data with the monday token to monday api
   const mondayAuthAndData = async () => {
     try {
@@ -17,7 +17,7 @@ export const getAllData = async (req: Request, res: Response) => {
         url: "https://api.monday.com/v2",
         method: "POST",
         data: {
-          query: `query { boards( ids: [4190641229]) { name id items { name column_values {
+          query: `query { boards( ids: [${boardId}]) { name id items { name column_values {
                     title
                      text
                         }}}}`,
@@ -93,7 +93,7 @@ export const getAllData = async (req: Request, res: Response) => {
           daysArray.push(singleDay);
         }
       }
-      deleteAllDays();
+      // deleteAllDays();
       pushingDaysArrayToDb(daysArray);
     } catch (error) {
       console.log(error);

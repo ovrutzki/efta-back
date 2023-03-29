@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import config from "../config/config";
 
 export const addMondayData = async (req: Request, res: Response) => {
-  const { client_id, client_secret, signing_secret, app_id, mondayToken } =
+  const { client_id, client_secret, signing_secret, app_id, mondayToken, boardId } =
     req.body;
   const courseName = req.body.courseName;
 
@@ -18,6 +18,7 @@ export const addMondayData = async (req: Request, res: Response) => {
         signing_secret: signing_secret,
         app_id: app_id,
         mondayToken: mondayToken,
+        boardId: boardId
       },
       config.secretKey,
       {

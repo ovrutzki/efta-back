@@ -13,6 +13,10 @@ export const deleteAllDays = async () => {
 
 export const pushingDaysArrayToDb = async (daysArray: IDays[]) => {
   try {
+    if (await DaysModel.find()) {
+      const _daysArray = DaysModel.updateMany(daysArray)
+      return _daysArray;
+    }
     const _daysArray = DaysModel.insertMany(daysArray);
     return _daysArray;
   } catch (err) {
