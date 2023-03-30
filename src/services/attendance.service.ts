@@ -28,7 +28,7 @@ export const updateAttendance = async (
     if (specificDay?.attendance?.find((obj) => obj.studentName === userEmail)) {
       for (let i = 0; i < specificDay.attendance.length; i++) {
         if (specificDay.attendance[i].studentName === userEmail) {
-          specificDay.attendance[i].status = status;
+          const specificDay = await AttendanceModel.findOneAndUpdate({date: date,courseCode: courseCode}, {$set:{attendance:{studentName:userEmail, status:status}}})
           break;
         }
       }
