@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import config from "../config/config";
 import { ICourse } from "../models/course.model";
+import { insertCourseDays } from "./attendance.controller";
 
 export const addCourseData = async (req: Request, res: Response) => {
   const {
@@ -18,7 +19,6 @@ export const addCourseData = async (req: Request, res: Response) => {
     classRoomLink,
     courseCode
   } = req.body;
-  // const courseCode = req.body.courseCode;
 
   // admin token decoded
   let token = req.headers.authorization?.split(" ")[1];
@@ -56,9 +56,9 @@ export const addCourseData = async (req: Request, res: Response) => {
       courseCode: courseCode,
     };
    
-    console.log(typeof courseData);
-    
     courseCreation(courseCode, courseData);
+    // pushing days to attendance according to course dates:
+    insertCourseDays(courseCode,startDate, EndDate )
     return res.status(200).json({
       status: 201,
       message: "Successfully Add Data",

@@ -1,10 +1,15 @@
 import { CourseModel, ICourse } from "../models/course.model";
+import { UserModel } from "../models/users.model";
 
 export const courseCreation = async (
   courseCode: string,
   courseData: ICourse
 ) => {
   try {
+// update admin course code:
+  const _admin = await UserModel.findOneAndUpdate({email:courseData.admin}, {courseCode:courseCode})
+  _admin?.save()
+
     const courseArray = await CourseModel.find({ courseCode: courseCode });
 
     if (courseArray.length > 0) {
@@ -14,7 +19,7 @@ export const courseCreation = async (
         { $set:  courseData  }
       );
       if (_courseData) {
-        return _courseData;
+        return (_courseData);
       }
     } else {
       console.log("else", courseData);

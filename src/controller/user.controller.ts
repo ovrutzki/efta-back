@@ -34,7 +34,10 @@ console.log(typeof code);
         return res.status(409).send("User Already Exist. Please Login");
       }
    }
-   
+   // changing the phone format:
+   const phoneNumArray = phone.split("").filter((e:string)=> e!== "-")
+   const fiveIndex = phoneNumArray.findIndex((e:string)=> e==='5')
+   const phoneTransform = phoneNumArray.slice(fiveIndex).join("");
 
 
     // hashing the user password
@@ -46,7 +49,7 @@ console.log(typeof code);
     const user = {
       name: name,
       lastName: lastName,
-      phone: phone,
+      phone: phoneTransform,
       email: email,
       password: encryptedPassword,
       courseCode: role==="admin" ? "" : code,
@@ -69,18 +72,21 @@ export const logInUser = async (req: Request, res: Response) => {
   const password = req.body.password;
   try {
     const user = await UserModel.findOne({ email: email });
-    const userToReturn = await UserModel.findOne({ email: email }).select('-password -phone');
+    const userToReturn = await UserModel.findOne({ email: email }).select('-password');
     
 
-    let haveCourseOrNot = "im a user"
+    let isAdmin = false;
+    let haveCourse = false;
     console.log('test ',(await CourseModel.findOne({admin:email})));
 
 // check if the user is admin:
     if(user?.role === "admin"){
+      isAdmin = true;
        if(await CourseModel.findOne({admin:email})){
-         haveCourseOrNot= "have course"
+        haveCourse = true
        } else {
-        haveCourseOrNot= "I m admin and have no course yet"
+        isAdmin = true;
+        haveCourse = false
        }
     }
 // check if the admin have a course in the data base
@@ -108,7 +114,8 @@ export const logInUser = async (req: Request, res: Response) => {
         message: "Auth successful",
         token,
         user: userToReturn,
-        courseStatus:haveCourseOrNot,
+        admin: isAdmin,
+        haveCourse: haveCourse
       });
     }
     res.status(400).send("Invalid Credentials");

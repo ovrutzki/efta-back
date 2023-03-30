@@ -9,10 +9,10 @@ export interface IDays {
   mentorPhone?:string;
   address?:string;
   hours?:string[];
-  attendance?:[{studentName:string, status:number}];
   dailyClassRoom?:string;
   googleMeet?:string;
-  guestLecturer?:boolean
+  guestLecturer?:boolean;
+  courseCode?:string
 }
 
 export const daysSchema = new Schema<IDays>({
@@ -23,10 +23,10 @@ export const daysSchema = new Schema<IDays>({
   mentorPhone: {type:String},
   address:{type:String},
   hours:[String],
-  attendance:[{studentName:{type:String}, status:{type:Number}}],
   dailyClassRoom:{type:String},
   googleMeet:{type:String},
   guestLecturer:{type:Boolean},
+  courseCode:{type:String},
 });
 
 export const DaysModel = mongoose.model<IDays>("days", daysSchema);
