@@ -1,0 +1,153 @@
+[
+  {
+    name: 'CSS basics',
+    column_values: [
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object]
+    ]
+  },
+  {
+    name: 'Loops',
+    column_values: [
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object]
+    ]
+  },
+  {
+    name: 'Array',
+    column_values: [
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object]
+    ]
+  },
+  {
+    name: 'New Item',
+    column_values: [
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object]
+    ]
+  },
+  {
+    name: 'HTML Forms',
+    column_values: [
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object]
+    ]
+  },
+  {
+    name: 'React',
+    column_values: [
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object]
+    ]
+  },
+  {
+    name: 'mongoose',
+    column_values: [
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object]
+    ]
+  },
+  {
+    name: 'matirial UI',
+    column_values: [
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object]
+    ]
+  }
+]
+[
+  {
+    events: [ [Object], [Object] ],
+    dayNumber: '1',
+    date: '03-30-2023',
+    mentorPhone: '524682222',
+    mentorName: 'eran ovrutzki',
+    address: 'Lilingblom, 20',
+    hours: [ '10:30', '18:00' ],
+    dailyClassRoom: 'https://classroom.google.com/w/NTc4MTMyNjgwODM2/tc/NTc4NzIwMzc5NzE2',
+    googleMeet: '',
+    guestLecturer: false,
+    courseCode: '1111'
+  },
+  {
+    events: [ [Object] ],
+    dayNumber: '3',
+    date: '03-31-2023',
+    mentorPhone: '',
+    mentorName: '',
+    address: 'Lilingblom, 20',
+    hours: [ '9:30', '18:00' ],
+    dailyClassRoom: 'https://classroom.google.com/w/NTc4MTMyNjgwODM2/tc/NTgzNzgwNDM3NTcz',
+    googleMeet: '',
+    guestLecturer: false,
+    courseCode: '1111'
+  },
+  {
+    events: [ [Object] ],
+    dayNumber: '',
+    date: '04-01-2023',
+    mentorPhone: '524681111',
+    mentorName: 'assafkatz99@gmail.com',
+    address: '',
+    hours: [ '10:30', '18:00' ],
+    dailyClassRoom: '',
+    googleMeet: '',
+    guestLecturer: false,
+    courseCode: '1111'
+  },
+  {
+    events: [ [Object] ],
+    dayNumber: '2',
+    date: '04-02-2023',
+    mentorPhone: '',
+    mentorName: '',
+    address: 'Lilingblom, 20',
+    hours: [ '9:30', '18:00' ],
+    hours: [ '10:30', '18:00' ],
+    dailyClassRoom: '',
+    googleMeet: '',
+    guestLecturer: false,
+    courseCode: '1111'
+  }
+]

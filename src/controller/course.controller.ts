@@ -8,10 +8,6 @@ import { insertCourseDays } from "./attendance.controller";
 
 export const addCourseData = async (req: Request, res: Response) => {
   const {
-    client_id,
-    client_secret,
-    signing_secret,
-    app_id,
     mondayToken,
     boardId,
     startDate,
@@ -20,21 +16,17 @@ export const addCourseData = async (req: Request, res: Response) => {
     courseCode
   } = req.body;
 
+  // check how much time the course will run to give exp for the monday token
+
   // admin token decoded
   let token = req.headers.authorization?.split(" ")[1];
 
-  const adminEmail =
-    token &&
-    JSON.parse(Buffer.from(token.split(".")[1], "base64").toString()).email;
+  const adminEmail = token && JSON.parse(Buffer.from(token.split(".")[1], "base64").toString()).email;
 
   try {
     // hashing all the monday data:
     const mondayDataToken: string = jwt.sign(
       {
-        client_id: client_id,
-        client_secret: client_secret,
-        signing_secret: signing_secret,
-        app_id: app_id,
         mondayToken: mondayToken,
         boardId: boardId,
       },
@@ -44,7 +36,6 @@ export const addCourseData = async (req: Request, res: Response) => {
       }
     );
 
-    // const mondayData = mondayDataToken;
 
     // course data in one object:
     const courseData:ICourse = {

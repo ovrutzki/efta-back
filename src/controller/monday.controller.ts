@@ -4,6 +4,9 @@ import { CourseModel, ICourse } from "../models/course.model";
 import { IDays } from "../models/days.model";
 import { deleteAllDays, deleteDaysByCourseCode, pushingDaysArrayToDb } from "../services/days.service";
 import { getMondayToken } from "./course.controller";
+const cron = require("node-cron");
+const moment = require('moment-timezone');
+
 
 export const getAllData = async (req: Request, res: Response) => {
   let UserToken = req.headers.authorization?.split(" ")[1];
@@ -12,15 +15,13 @@ export const getAllData = async (req: Request, res: Response) => {
     JSON.parse(Buffer.from(UserToken.split(".")[1], "base64").toString());
   const courseCode = userTokenDecoded.courseCode;
   // taking the board Id and the secret monday token:
-  console.log("corseCode-", courseCode);
 
   const mondayDbToken = await getMondayToken(courseCode, res);
 
-  const tokenDeCoded =
-    mondayDbToken &&
-    JSON.parse(Buffer.from(mondayDbToken.split(".")[1], "base64").toString());
+  const tokenDeCoded = mondayDbToken && JSON.parse(Buffer.from(mondayDbToken.split(".")[1], "base64").toString());
 
   const mondaySecretToken = tokenDeCoded.mondayToken;
+  
   const boardId = tokenDeCoded.boardId;
   //  sending a request to get course data with the monday token to monday api
   const mondayAuthAndData = async () => {
@@ -53,6 +54,7 @@ export const getAllData = async (req: Request, res: Response) => {
   //   course data!!
   const mondayBoard = await mondayAuthAndData();
   const mondayData = mondayBoard[0].items;
+console.log(mondayData);
 
   // sending data to the data base:
 
@@ -110,12 +112,13 @@ export const getAllData = async (req: Request, res: Response) => {
           daysArray.push(singleDay);
         }
       }
+      deleteDaysByCourseCode(courseCode);
+      
       pushingDaysArrayToDb(daysArray);
     } catch (error) {
       console.log(error);
     }
   };
-  deleteDaysByCourseCode(courseCode);
   setTimeout(sendingDataToDB, 2000);
 };
 
@@ -234,3 +237,12 @@ export const updatingAllDays = async () => {
     setTimeout(sendingDataToDB, 2000);
   }
 };
+
+
+// executing the function every midnight:
+cron.schedule('0 0 * * *', function() {
+  updatingAllDays()
+}, {
+  timezone: 'Israel'
+});
+
