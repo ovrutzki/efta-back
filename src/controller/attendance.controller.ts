@@ -28,9 +28,13 @@ export const insertCourseDays = async (code: string, start: any, end: any) => {
       return arr;
     };
 
-    const dayList = getDaysArray(new Date(dateObjectStart), new Date(dateObjectEnd));
-    const daysArray = dayList.map((v) => v.toISOString().slice(0, 10));
-    console.log(daysArray);
+    const dayList = getDaysArray(dateObjectStart, dateObjectEnd);
+    const daysArray = dayList.map((v) => {
+      const month = v.getMonth() + 1 < 10 ? "0" + (v.getMonth() + 1) : v.getMonth() + 1;
+      const date = v.getDate() < 10 ? "0" + v.getDate() : v.getDate();
+      const year = v.getFullYear();
+      return `${month}-${date}-${year}`;
+    });
 
     let daysObjectArray: IAttendance[] = [];
     for (let i = 0; i < daysArray.length; i++) {
@@ -41,12 +45,14 @@ export const insertCourseDays = async (code: string, start: any, end: any) => {
       };
       daysObjectArray.push(dayDocument);
     }
+    console.log(dayList, daysArray);
+    
     pushingDaysDate(daysObjectArray);
   } catch (error) {
     console.log(error);
   }
 };
-
+// insertCourseDays("hello", "01-30-2023", "02-28-2023")
 export const attendanceUpdate = async (req: Request, res: Response) => {
   let token = req.headers.authorization?.split(" ")[1];
   const userEmail =

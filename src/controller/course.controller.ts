@@ -15,7 +15,7 @@ export const addCourseData = async (req: Request, res: Response) => {
     mondayToken,
     boardId,
     startDate,
-    EndDate,
+    endDate,
     classRoomLink,
     courseCode
   } = req.body;
@@ -49,7 +49,7 @@ export const addCourseData = async (req: Request, res: Response) => {
     // course data in one object:
     const courseData:ICourse = {
       startingDate: startDate,
-      endingDate: EndDate,
+      endingDate: endDate,
       admin: adminEmail,
       classRoomLink: classRoomLink,
       mondayData: mondayDataToken,
@@ -58,7 +58,7 @@ export const addCourseData = async (req: Request, res: Response) => {
    
     courseCreation(courseCode, courseData);
     // pushing days to attendance according to course dates:
-    insertCourseDays(courseCode,startDate, EndDate )
+    insertCourseDays(courseCode,startDate, endDate )
     return res.status(200).json({
       status: 201,
       message: "Successfully Add Data",
