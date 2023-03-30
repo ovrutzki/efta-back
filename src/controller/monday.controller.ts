@@ -76,6 +76,8 @@ export const getAllData = async (req: Request, res: Response) => {
         // changing the hours format:
         const hoursArray = item.column_values[7].text.split("-");
 
+        // 
+
         const singleDay: IDays = {
           events: [{ eventName: item.name, link: item.column_values[10].text }],
           dayNumber: item.column_values[5].text,
