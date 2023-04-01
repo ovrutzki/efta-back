@@ -6,6 +6,7 @@ import { registerUser } from "../services/user.service";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv"
 import config from "../config/config";
+import { addUserToAttendance } from "../services/attendance.service";
 
 
 dotenv.config()
@@ -55,6 +56,10 @@ console.log(typeof code);
       courseCode: role==="admin" ? "" : code,
       role: role,
     };
+    if(code !==process.env.ADMIN_CODE ){
+      // updateUserInAttendanceCollection(code ,email, phone, 0 )
+    }
+    addUserToAttendance(user.email,user.phone,code)
     registerUser(user);
     return res.status(200).json({
       status: 201,
@@ -100,6 +105,7 @@ export const logInUser = async (req: Request, res: Response) => {
       const token = jwt.sign(
         {
             email: user.email,
+            phone:user.phone,
             role: user.role,
             courseCode: user.courseCode
           },

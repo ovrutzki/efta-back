@@ -17,7 +17,8 @@ export const updateAttendance = async (
   courseCode: string,
   date: string,
   userEmail: string,
-  status: number
+  status: number,
+  phone:string
 ) => {
   try {
     //
@@ -28,7 +29,7 @@ export const updateAttendance = async (
     if (specificDay?.attendance?.find((obj) => obj.studentName === userEmail)) {
       for (let i = 0; i < specificDay.attendance.length; i++) {
         if (specificDay.attendance[i].studentName === userEmail) {
-          const specificDay = await AttendanceModel.findOneAndUpdate({date: date,courseCode: courseCode}, {$set:{attendance:{studentName:userEmail, status:status}}})
+          const specificDay = await AttendanceModel.findOneAndUpdate({date: date,courseCode: courseCode}, {$set:{attendance:{studentName:userEmail,phone:phone, status:status}}})
           break;
         }
       }
@@ -38,7 +39,7 @@ export const updateAttendance = async (
     } else {
       const specificDay = await AttendanceModel.findOneAndUpdate(
         { date: date, courseCode: courseCode },
-        { $push: { attendance: { studentName: userEmail, status: status } } }
+        { $push: { attendance: { studentName: userEmail,phone:phone, status: status } } }
       );
       console.log("push");
 
@@ -106,3 +107,41 @@ export const allDaysAttendance = async (
     console.log(error);
   }
 };
+
+export const updateCourseDaysFromMonday = async (dateArray:string[],courseCode:string) =>{
+    const daysInCollection:IAttendance[] = await AttendanceModel.find({courseCode:courseCode})
+    const daysFromMonday = dateArray
+  try {
+    for (let i = 0; i < daysInCollection.length; i++) {
+        for (let j = 0; j < daysFromMonday.length; j++) {
+          if (daysInCollection[i].date !== daysFromMonday[j]) {
+            const dayToAdd = {
+              courseCode:courseCode,
+              date:daysFromMonday[j],
+              attendance: [{}]
+            }
+            const _dayToAdd = new AttendanceModel(dayToAdd);
+            _dayToAdd.save()
+          }
+        }      
+    }
+  } catch (error) {
+   console.log(error);
+    
+  }
+
+}
+
+export const addUserToAttendance = async (email:string,phone:string,courseCode:string) => {
+  try {
+    const courseDays = await AttendanceModel.updateMany({courseCode:courseCode},{$push:{attendance:{
+      userName:email,
+      phone:phone,
+      status:0
+    }}})
+    
+  } catch (error) {
+    console.log(error);
+    
+  }
+}

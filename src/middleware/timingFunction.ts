@@ -1,21 +1,23 @@
+import moment from 'moment-timezone';
 
-const timingFunction = (func:void, intervalInMin:number, startHour:number, endHour:number) =>{
-    //making the hours argument date format
-    const startTime = new Date();
-  startTime.setHours(startHour, 0, 0);
+function runFunctionEveryFiveMinutes() {
+  const timeZone = 'Asia/Jerusalem'; // Set the time zone to Israel
+  const startTime = moment.tz('10:00', 'HH:mm', timeZone);
+  const endTime = moment.tz('11:00', 'HH:mm', timeZone);
+  const interval = 5 * 60 * 1000; // 5 minutes in milliseconds
 
-  const endTime = new Date();
-  endTime.setHours(endHour, 0, 0);
-
-//   changing interval to mili sec:
-  const interval = intervalInMin * 60 * 1000; 
-
-  const functionInterval = setInterval(()=>{
-    const currentTime = new Date();
-    if(startTime <= currentTime && currentTime <= endTime){
-        func
-    } else if(currentTime> endTime){
-        clearInterval(functionInterval);
+  const intervalId = setInterval(() => {
+    const currentTime = moment.tz(timeZone);
+    if (currentTime >= startTime && currentTime <= endTime) {
+      // Call your desired function here
+      console.log('Function called at', currentTime.format('YYYY-MM-DD HH:mm:ss z'));
+    } else if (currentTime > endTime) {
+      clearInterval(intervalId);
     }
-  },interval)
+  }, interval);
 }
+
+
+
+
+

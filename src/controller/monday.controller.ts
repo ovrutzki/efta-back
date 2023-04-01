@@ -2,6 +2,7 @@ import axios from "axios";
 import { Request, Response } from "express";
 import { CourseModel, ICourse } from "../models/course.model";
 import { IDays } from "../models/days.model";
+import { updateCourseDaysFromMonday } from "../services/attendance.service";
 import { deleteAllDays, deleteDaysByCourseCode, pushingDaysArrayToDb } from "../services/days.service";
 import { getMondayToken } from "./course.controller";
 const cron = require("node-cron");
@@ -60,7 +61,7 @@ console.log(mondayData);
 
   const sendingDataToDB = async () => {
     const daysArray: IDays[] = [];
-
+    const dateArrayForAttendance = [];
     try {
       for (let i = 0; i < mondayData.length; i++) {
         let item = mondayData[i];
@@ -78,7 +79,7 @@ console.log(mondayData);
         // changing the hours format:
         const hoursArray = item.column_values[7].text.split("-");
 
-        // 
+        // creating a single day document:
 
         const singleDay: IDays = {
           events: [{ eventName: item.name, link: item.column_values[10].text }],
@@ -111,7 +112,11 @@ console.log(mondayData);
         } else {
           daysArray.push(singleDay);
         }
+        // pushing the items date to dteArrayForAttendance:
+        dateArrayForAttendance.push(dateTransform) 
       }
+
+      updateCourseDaysFromMonday(dateArrayForAttendance, courseCode)
       deleteDaysByCourseCode(courseCode);
       
       pushingDaysArrayToDb(daysArray);
@@ -242,6 +247,9 @@ export const updatingAllDays = async () => {
 // executing the function every midnight:
 cron.schedule('0 0 * * *', function() {
   updatingAllDays()
+
+  console.log("hello");
+  
 }, {
   timezone: 'Israel'
 });

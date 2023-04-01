@@ -4,8 +4,9 @@ import { DaysModel, IDays } from "../models/days.model";
 
 export const deleteAllDays = async () => {
   try {
-    const _daysArray = DaysModel.deleteMany({});
-    return _daysArray;
+    console.log("deleteMany");
+    
+    await DaysModel.deleteMany({});
   } catch (err) {
     console.log(err);
     throw err;
@@ -13,7 +14,7 @@ export const deleteAllDays = async () => {
 };
 export const deleteDaysByCourseCode = async (courseCode:string) => {
   try {
-    const _daysArray = DaysModel.deleteMany({courseCode:courseCode});
+    const _daysArray = await DaysModel.deleteMany({courseCode:courseCode});
     return _daysArray;
   } catch (err) {
     console.log(err);

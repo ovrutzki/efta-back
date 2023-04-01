@@ -71,13 +71,16 @@ export const attendanceUpdate = async (req: Request, res: Response) => {
   const userEmail =
     token &&
     JSON.parse(Buffer.from(token.split(".")[1], "base64").toString()).email;
+  const userPhone =
+    token &&
+    JSON.parse(Buffer.from(token.split(".")[1], "base64").toString()).phone;
   const courseCode =
     token &&
     JSON.parse(Buffer.from(token.split(".")[1], "base64").toString())
       .courseCode;
   const { date, status } = req.body;
   try {
-    const attendance = updateAttendance(courseCode, date, userEmail, status);
+    const attendance = updateAttendance(courseCode, date, userEmail, status, userPhone);
     return res.status(200).json({
       status: 200,
       data: attendance,
@@ -108,7 +111,6 @@ export const getAllDaysAttendance = async (req: Request, res: Response) => {
   const courseCode =token && JSON.parse(Buffer.from(token.split(".")[1], "base64").toString()).courseCode;
   const role =token && JSON.parse(Buffer.from(token.split(".")[1], "base64").toString()).role;
   const email =token && JSON.parse(Buffer.from(token.split(".")[1], "base64").toString()).email;
-  const dayDate = req.body.date;
   try {
     const courseAttendance = await allDaysAttendance(courseCode, role, email);
     return courseAttendance;
@@ -116,6 +118,8 @@ export const getAllDaysAttendance = async (req: Request, res: Response) => {
     console.log(error);
   }
 };
+
+
 
 
 cron.schedule('0 0 * * *', function() {
