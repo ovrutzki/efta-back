@@ -135,7 +135,7 @@ export const updateCourseDaysFromMonday = async (dateArray:string[],courseCode:s
 export const addUserToAttendance = async (email:string,phone:string,courseCode:string) => {
   try {
     const courseDays = await AttendanceModel.updateMany({courseCode:courseCode},{$push:{attendance:{
-      userName:email,
+      studentName:email,
       phone:phone,
       status:0
     }}})
