@@ -98,9 +98,13 @@ export const allDaysAttendance = async (
         return userStatus;
       }
     } else if (role === "admin") {
+      console.log("attendance");
+      
       const specificCourse: IAttendance[] = await AttendanceModel.find({
         courseCode: courseCode,
       });
+      console.log(specificCourse);
+      
       return specificCourse;
     }
   } catch (error) {
@@ -139,6 +143,7 @@ export const addUserToAttendance = async (email:string,phone:string,courseCode:s
       phone:phone,
       status:0
     }}})
+    console.log("phone", phone);
     
   } catch (error) {
     console.log(error);

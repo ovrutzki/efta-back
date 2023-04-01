@@ -113,7 +113,9 @@ export const getAllDaysAttendance = async (req: Request, res: Response) => {
   const email =token && JSON.parse(Buffer.from(token.split(".")[1], "base64").toString()).email;
   try {
     const courseAttendance = await allDaysAttendance(courseCode, role, email);
-    return courseAttendance;
+    return res
+    .status(200)
+    .json(courseAttendance);
   } catch (error) {
     console.log(error);
   }

@@ -37,6 +37,8 @@ console.log(typeof code);
    }
    // changing the phone format:
    const phoneNumArray = phone.split("").filter((e:string)=> e!== "-")
+   console.log(phoneNumArray);
+   
    const fiveIndex = phoneNumArray.findIndex((e:string)=> e==='5')
    const phoneTransform = phoneNumArray.slice(fiveIndex).join("");
 
@@ -57,9 +59,10 @@ console.log(typeof code);
       role: role,
     };
     if(code !==process.env.ADMIN_CODE ){
-      // updateUserInAttendanceCollection(code ,email, phone, 0 )
+      console.log("phoneTransform",phoneTransform);
+      
+      addUserToAttendance(email,phoneTransform,code)
     }
-    addUserToAttendance(user.email,user.phone,code)
     registerUser(user);
     return res.status(200).json({
       status: 201,
