@@ -71,9 +71,9 @@ console.log("mondayData", mondayData);
       for (let i = 0; i < mondayData.length; i++) {
         
         let item = mondayData[i];
-        console.log(" item.column_values[4].text", item.column_values[4].text);
+        console.log(" item.column_values[4].text", item.column_values[5].text);
         // changing the date format:
-        const dateAsArray =  item.column_values[4].text.split(" ");
+        const dateAsArray =  item.column_values[5].text.split(" ");
 
         const beginningDate = dateAsArray[0] 
         const endingDate = dateAsArray[2]
@@ -92,14 +92,14 @@ console.log("mondayData", mondayData);
       
  
         // changing the phone format:
-        const phoneNumArray = item.column_values[19].text
+        const phoneNumArray = item.column_values[20].text
           .split("")
           .filter((e: string) => e !== "-");
         const fiveIndex = phoneNumArray.findIndex((e: string) => e === "5");
         const phoneTransform = phoneNumArray.slice(fiveIndex).join("");
 
         // changing the hours format:
-        const hoursArray = item.column_values[7].text.split("-");
+        const hoursArray = item.column_values[8].text.split("-");
 
         // creating a single day document:
 
@@ -109,20 +109,20 @@ console.log("mondayData", mondayData);
 
             const beginningDateTransform = `${splittedDate[1]}-${splittedDate[2]}-${splittedDate[0]}`
             const singleDay: IDays = {
-              events: [{ eventName: item.name, link: item.column_values[10].text }],
-              dayNumber: item.column_values[5].text,
+              events: [{ eventName: item.name, link: item.column_values[11].text }],
+              dayNumber: item.column_values[6].text,
               date: beginningDateTransform,
               mentorPhone: phoneTransform,
               mentorName:
-                item.column_values[20].text === "Guest lecturer"
+                item.column_values[21].text === "Guest lecturer"
                   ? ""
-                  : item.column_values[0].text,
-              address: item.column_values[18].text,
+                  : item.column_values[1].text,
+              address: item.column_values[19].text,
               hours: hoursArray,
-              dailyClassRoom: item.column_values[15].text,
-              googleMeet: item.column_values[16].text,
+              dailyClassRoom: item.column_values[16].text,
+              googleMeet: item.column_values[17].text,
               guestLecturer:
-                item.column_values[17].text === "Guest lecturer" ? true : false,
+                item.column_values[18].text === "Guest lecturer" ? true : false,
               courseCode: courseCode,
             };
             const existingDay = daysArray.find(

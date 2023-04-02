@@ -90,16 +90,22 @@ export const allDaysAttendance = async (
       const specificCourse: IAttendance[] = await AttendanceModel.find({
         courseCode: courseCode,
       });
-      console.log("specificCourse",specificCourse);
-      
+      const userAttendanceArray = []
       for (let i = 0; i < specificCourse.length; i++) {
         const dayAttendance = specificCourse[i].attendance;
         const userStatus = dayAttendance?.filter(
           (e: any) => e.studentName === email
         );
         console.log(i, dayAttendance);
-        return userStatus;
+        const userDayAttendance = {
+          date:specificCourse[i].date,
+          userStatus:userStatus
+        }
+        userAttendanceArray.push(userDayAttendance)
       }
+      console.log("userAttendanceArray",userAttendanceArray);
+      
+      return userAttendanceArray;
     } else if (role === "admin") {
       
       const specificCourse: IAttendance[] = await AttendanceModel.find({
