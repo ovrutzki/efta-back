@@ -19,6 +19,7 @@ export const getAllData = async (req: Request, res: Response) => {
   // taking the board Id and the secret monday token:
 
   const mondayDbToken = await getTokenFromDB(courseCode);
+  console.log('mondayDbToken', mondayDbToken);
 
   const tokenDeCoded = mondayDbToken && JSON.parse(Buffer.from(mondayDbToken.split(".")[1], "base64").toString());
 
@@ -57,8 +58,9 @@ export const getAllData = async (req: Request, res: Response) => {
   };
   //   course data!!
   const mondayBoard = await mondayAuthAndData();
+
   const mondayData = mondayBoard[0].items;
-// console.log(mondayData);
+console.log("mondayData", mondayData);
 
   // sending data to the data base:
 
@@ -69,11 +71,12 @@ export const getAllData = async (req: Request, res: Response) => {
       for (let i = 0; i < mondayData.length; i++) {
         let item = mondayData[i];
         // changing the date format:
-        const dateAsArray = item.column_values[4].text.split(" ");
+        const dateAsArray =  item.column_values[4].text.split(" ");
 
         const beginningDate = dateAsArray[0] 
         const endingDate = dateAsArray[2]
 
+        // array of days for one item:
           const dates = [];
           let currentDate = new Date(beginningDate);
           const end = new Date(endingDate);
@@ -99,7 +102,6 @@ export const getAllData = async (req: Request, res: Response) => {
         // creating a single day document:
 
           for (let j = 0; j < dates.length; j++) {
-                console.log([j], dates[j]);
                 
             const splittedDate = dates[j].split('-')
 
