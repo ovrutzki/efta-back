@@ -7,7 +7,7 @@ export const courseCreation = async (
 ) => {
   try {
 // update admin course code:
-  const _admin = await UserModel.findOneAndUpdate({email:courseData.admin}, {courseCode:courseCode})
+  const _admin = await UserModel.findOneAndUpdate({email:courseData.admin},{$set:{courseCode:courseCode}})
   _admin?.save()
 
     const courseArray = await CourseModel.find({ courseCode: courseCode });
