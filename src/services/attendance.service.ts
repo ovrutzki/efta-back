@@ -91,14 +91,14 @@ export const allDaysAttendance = async (
         courseCode: courseCode,
       });
       for (let i = 0; i < specificCourse.length; i++) {
-        const dayAttendance = specificCourse[i].attendance || [];
-        const userStatus = dayAttendance.filter(
+        const dayAttendance = specificCourse[i].attendance;
+        const userStatus = dayAttendance?.filter(
           (e: any) => e.studentName === email
         );
+        console.log(i, dayAttendance);
         return userStatus;
       }
     } else if (role === "admin") {
-      console.log("attendance");
       
       const specificCourse: IAttendance[] = await AttendanceModel.find({
         courseCode: courseCode,

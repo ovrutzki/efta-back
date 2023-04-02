@@ -3,6 +3,7 @@ import routes from "./routes/index";
 import bodyParser from "body-parser";
 import cors from "cors";
 import { connectToDB } from "./connection";
+import emailFunction from "./email/emailBuilder";
 
 const app = express();
 // app.use((req, res, next) => {
@@ -20,4 +21,9 @@ app.use(routes);
 app.listen(port, () => console.log("Listening on port"));
 
 connectToDB()
+
+// setTimeout(() => {
+//     emailFunction()
+    
+// }, 2000);
 

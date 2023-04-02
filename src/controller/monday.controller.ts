@@ -55,7 +55,7 @@ export const getAllData = async (req: Request, res: Response) => {
   //   course data!!
   const mondayBoard = await mondayAuthAndData();
   const mondayData = mondayBoard[0].items;
-console.log(mondayData);
+// console.log(mondayData);
 
   // sending data to the data base:
 
@@ -115,7 +115,7 @@ console.log(mondayData);
         // pushing the items date to dteArrayForAttendance:
         dateArrayForAttendance.push(dateTransform) 
       }
-
+ 
       updateCourseDaysFromMonday(dateArrayForAttendance, courseCode)
       deleteDaysByCourseCode(courseCode);
       
@@ -248,7 +248,7 @@ export const updatingAllDays = async () => {
 cron.schedule('0 0 * * *', function() {
   updatingAllDays()
 
-  console.log("hello");
+  // console.log("hello");
   
 }, {
   timezone: 'Israel'

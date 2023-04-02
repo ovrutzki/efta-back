@@ -25,14 +25,14 @@ export const deleteDaysByCourseCode = async (courseCode:string) => {
 export const pushingDaysArrayToDb = async (daysArray: IDays[]) => {
   try {    
     const array = daysArray
-    console.log("assaf",daysArray.length);
-    console.log("assaf arr",daysArray);
+    // console.log("assaf",daysArray.length);
+    // console.log("assaf arr",daysArray);
     
     for(let i = 0; i < array.length ; i++ ){
       const _DayArray = new DaysModel(array[i]);
       await _DayArray.save()
 
-      console.log(`checking ${i}`, array[i])
+      // console.log(`checking ${i}`, array[i])
     }
         
   } catch (err) {
