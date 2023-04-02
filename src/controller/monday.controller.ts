@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { CourseModel, ICourse } from "../models/course.model";
 import { IDays } from "../models/days.model";
 import { updateCourseDaysFromMonday } from "../services/attendance.service";
+import { getTokenFromDB } from "../services/course.service";
 import { deleteAllDays, deleteDaysByCourseCode, pushingDaysArrayToDb } from "../services/days.service";
 import { getMondayToken } from "./course.controller";
 const cron = require("node-cron");
@@ -17,10 +18,12 @@ export const getAllData = async (req: Request, res: Response) => {
   const courseCode = userTokenDecoded.courseCode;
   // taking the board Id and the secret monday token:
 
-  const mondayDbToken = await getMondayToken(courseCode, res);
+  const mondayDbToken = await getTokenFromDB(courseCode);
 
   const tokenDeCoded = mondayDbToken && JSON.parse(Buffer.from(mondayDbToken.split(".")[1], "base64").toString());
 
+  console.log('tokenDeCoded', tokenDeCoded);
+  
   const mondaySecretToken = tokenDeCoded.mondayToken;
   
   const boardId = tokenDeCoded.boardId;
