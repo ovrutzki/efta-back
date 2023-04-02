@@ -69,7 +69,9 @@ console.log("mondayData", mondayData);
     const dateArrayForAttendance = [];
     try {
       for (let i = 0; i < mondayData.length; i++) {
+        
         let item = mondayData[i];
+        console.log(" item.column_values[4].text", item.column_values[4].text);
         // changing the date format:
         const dateAsArray =  item.column_values[4].text.split(" ");
 

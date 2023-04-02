@@ -90,6 +90,8 @@ export const allDaysAttendance = async (
       const specificCourse: IAttendance[] = await AttendanceModel.find({
         courseCode: courseCode,
       });
+      console.log("specificCourse",specificCourse);
+      
       for (let i = 0; i < specificCourse.length; i++) {
         const dayAttendance = specificCourse[i].attendance;
         const userStatus = dayAttendance?.filter(
