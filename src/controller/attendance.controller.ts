@@ -7,8 +7,7 @@ import {
   updateAttendance,
   allDaysAttendance
 } from "../services/attendance.service";
-const cron = require("node-cron");
-const moment = require('moment-timezone');
+
 
 
 export const insertCourseDays = async (code: string, start: any, end: any) => {
@@ -123,8 +122,3 @@ export const getAllDaysAttendance = async (req: Request, res: Response) => {
 
 
 
-cron.schedule('0 0 * * *', function() {
-  
-}, {
-  timezone: 'Israel'
-});

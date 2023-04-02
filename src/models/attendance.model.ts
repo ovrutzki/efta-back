@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 export interface IAttendance {
   courseCode: string;
   date: string;
-  attendance?: [{ studentName?: string,phone?:string, status?: number }];
+  attendance: [{ studentName?: string,phone?:string, status?: number }];
 }
 
 export const attendanceSchema = new Schema<IAttendance>({
