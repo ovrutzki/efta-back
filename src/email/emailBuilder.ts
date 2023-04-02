@@ -30,7 +30,6 @@ const sender ={
    email:'moveochamp@gmail.com'
 }
 
-console.log(receivers);
 
 tranEmailApi.sendTransacEmail({
    sender,

@@ -41,7 +41,6 @@ export const registerNewUser = async (req: Request, res: Response) => {
    }
    // changing the phone format:
    const phoneNumArray = phone.split("").filter((e:string)=> e!== "-")
-   console.log(phoneNumArray);
    
    const fiveIndex = phoneNumArray.findIndex((e:string)=> e==='5')
    const phoneTransform = phoneNumArray.slice(fiveIndex).join("");
@@ -63,7 +62,6 @@ export const registerNewUser = async (req: Request, res: Response) => {
       role: role,
     };
     if(code !==process.env.ADMIN_CODE ){
-      console.log("phoneTransform",phoneTransform);
       
       addUserToAttendance(email,phoneTransform,code)
     }
@@ -89,7 +87,6 @@ export const logInUser = async (req: Request, res: Response) => {
 
     let isAdmin = false;
     let haveCourse = false;
-    console.log('test ',(await CourseModel.findOne({admin:email})));
 
 // check if the user is admin:
     if(user?.role === "admin"){

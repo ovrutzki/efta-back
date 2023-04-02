@@ -13,7 +13,6 @@ export const courseCreation = async (
     const courseArray = await CourseModel.find({ courseCode: courseCode });
 
     if (courseArray.length > 0) {
-      console.log("if", courseData);
       const _courseData = await CourseModel.findOneAndUpdate(
         { courseCode: courseCode },
         { $set:  courseData  }
@@ -22,7 +21,6 @@ export const courseCreation = async (
         return (_courseData);
       }
     } else {
-      console.log("else", courseData);
       const _courseData = new CourseModel(courseData);
          _courseData.save();
       return _courseData;

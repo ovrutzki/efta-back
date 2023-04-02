@@ -58,7 +58,6 @@ export const insertCourseDays = async (code: string, start: any, end: any) => {
       };
       daysObjectArray.push(dayDocument);
     }
-    console.log(dayList, daysArray);
 
     pushingDaysDate(daysObjectArray);
   } catch (error) {
