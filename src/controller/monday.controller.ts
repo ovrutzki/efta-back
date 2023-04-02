@@ -69,9 +69,23 @@ export const getAllData = async (req: Request, res: Response) => {
       for (let i = 0; i < mondayData.length; i++) {
         let item = mondayData[i];
         // changing the date format:
-        const dateAsArray = item.column_values[4].text.split("-");
-        const dateTransform = `${dateAsArray[1]}-${dateAsArray[2]}-${dateAsArray[0]}`;
+        const dateAsArray = item.column_values[4].text.split(" ");
 
+        const beginningDate = dateAsArray[0] 
+        const endingDate = dateAsArray[2]
+
+          const dates = [];
+          let currentDate = new Date(beginningDate);
+          const end = new Date(endingDate);
+        
+          while (currentDate <= end) {
+            dates.push(currentDate.toISOString().substring(0, 10));
+            currentDate.setDate(currentDate.getDate() + 1);
+          }
+        console.log(dates);
+        // '2023-03-27', '2023-03-28', '2023-03-29' ]
+      
+ 
         // changing the phone format:
         const phoneNumArray = item.column_values[19].text
           .split("")
@@ -84,39 +98,50 @@ export const getAllData = async (req: Request, res: Response) => {
 
         // creating a single day document:
 
-        const singleDay: IDays = {
-          events: [{ eventName: item.name, link: item.column_values[10].text }],
-          dayNumber: item.column_values[5].text,
-          date: dateTransform,
-          mentorPhone: phoneTransform,
-          mentorName:
-            item.column_values[20].text === "Guest lecturer"
-              ? ""
-              : item.column_values[0].text,
-          address: item.column_values[18].text,
-          hours: hoursArray,
-          dailyClassRoom: item.column_values[15].text,
-          googleMeet: item.column_values[16].text,
-          guestLecturer:
-            item.column_values[17].text === "Guest lecturer" ? true : false,
-          courseCode: courseCode,
-        };
-        const existingDay = daysArray.find(
-          (day) => day.date === singleDay.date
-        );
-        if (singleDay.guestLecturer) {
-          if (existingDay) {
-            singleDay.events && existingDay?.events?.push(singleDay.events[0]);
-          } else {
-            daysArray.push(singleDay);
+          for (let j = 0; j < dates.length; j++) {
+                console.log([j], dates[j]);
+                
+            const splittedDate = dates[j].split('-')
+
+            const beginningDateTransform = `${splittedDate[1]}-${splittedDate[2]}-${splittedDate[0]}`
+            const singleDay: IDays = {
+              events: [{ eventName: item.name, link: item.column_values[10].text }],
+              dayNumber: item.column_values[5].text,
+              date: beginningDateTransform,
+              mentorPhone: phoneTransform,
+              mentorName:
+                item.column_values[20].text === "Guest lecturer"
+                  ? ""
+                  : item.column_values[0].text,
+              address: item.column_values[18].text,
+              hours: hoursArray,
+              dailyClassRoom: item.column_values[15].text,
+              googleMeet: item.column_values[16].text,
+              guestLecturer:
+                item.column_values[17].text === "Guest lecturer" ? true : false,
+              courseCode: courseCode,
+            };
+            const existingDay = daysArray.find(
+              (day) => day.date === singleDay.date
+            );
+            if (singleDay.guestLecturer) {
+              if (existingDay) {
+                singleDay.events && existingDay?.events?.push(singleDay.events[0]);
+              } else {
+                daysArray.push(singleDay);
+              }
+            } else if (existingDay) {
+              singleDay.events && existingDay?.events?.push(singleDay.events[0]);
+            } else {
+              daysArray.push(singleDay);
+            }
+  
+  
+          // pushing the items date to dteArrayForAttendance:
+          dateArrayForAttendance.push(beginningDateTransform) 
+
+            
           }
-        } else if (existingDay) {
-          singleDay.events && existingDay?.events?.push(singleDay.events[0]);
-        } else {
-          daysArray.push(singleDay);
-        }
-        // pushing the items date to dteArrayForAttendance:
-        dateArrayForAttendance.push(dateTransform) 
       }
  
       updateCourseDaysFromMonday(dateArrayForAttendance, courseCode)
@@ -258,4 +283,5 @@ cron.schedule('0 0 * * *', function() {
 }, {
   timezone: 'Israel'
 });
+
 
