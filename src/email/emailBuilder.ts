@@ -1,12 +1,26 @@
 //batchSend.js
 import dotenv from 'dotenv'
+import { IUser } from '../models/users.model';
+import { getAllUsers } from '../services/user.service';
 const Sib = require('sib-api-v3-sdk');
 
 dotenv.config()
 
- const emailFunction = () => {
+ const emailFunction = async () => {
    console.log('emailFunction');
-   
+
+   const receivers = [
+      // {
+      //    email:'eranavru100@gmail.com'
+      // },
+   ]
+   const usersEmails:IUser[] = await getAllUsers() || []
+   for (let i = 0; i < usersEmails.length; i++) {
+     const user = {
+      email: usersEmails[i].email
+      }
+      receivers.push(user)
+   }
    const client = Sib.ApiClient.instance;
    const apiKey:any = client.authentications['api-key']
    apiKey.apiKey = process.env.SENDINBLUE_KEY;
@@ -16,11 +30,7 @@ const sender ={
    email:'moveochamp@gmail.com'
 }
 
-const receivers = [
-   {
-      email:'eranavru100@gmail.com'
-   }
-]
+console.log(receivers);
 
 tranEmailApi.sendTransacEmail({
    sender,

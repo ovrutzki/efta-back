@@ -15,6 +15,8 @@ export const deleteAllDays = async () => {
 export const deleteDaysByCourseCode = async (courseCode:string) => {
   try {
     const _daysArray = await DaysModel.deleteMany({courseCode:courseCode});
+    console.log('_daysArray',_daysArray);
+    
     return _daysArray;
   } catch (err) {
     console.log(err);

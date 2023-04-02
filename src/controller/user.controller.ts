@@ -16,10 +16,14 @@ export const registerNewUser = async (req: Request, res: Response) => {
     const { name, lastName, email, password, phone, code } = req.body;
     let role = "user"
     if (!(email && password && name && lastName && code)) {
-      res.status(400).send("All input is required");
+      return res.status(400).send("All input is required");
     }
-console.log(typeof process.env.ADMIN_CODE);
-console.log(typeof code);
+    
+    // checking if the email is valid:
+    if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
+      return res.status(400).send("Invalid email address!");
+    }
+
 
     if (code === process.env.ADMIN_CODE) {
         role="admin";

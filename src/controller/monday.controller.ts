@@ -87,7 +87,7 @@ export const getAllData = async (req: Request, res: Response) => {
           date: dateTransform,
           mentorPhone: phoneTransform,
           mentorName:
-            item.column_values[17].text === "Guest lecturer"
+            item.column_values[20].text === "Guest lecturer"
               ? ""
               : item.column_values[0].text,
           address: item.column_values[18].text,
@@ -117,6 +117,8 @@ export const getAllData = async (req: Request, res: Response) => {
       }
  
       updateCourseDaysFromMonday(dateArrayForAttendance, courseCode)
+      console.log(courseCode);
+      
       deleteDaysByCourseCode(courseCode);
       
       pushingDaysArrayToDb(daysArray);

@@ -61,7 +61,6 @@ export const addCourseData = async (req: Request, res: Response) => {
 
 export const getMondayToken = async (courseCode: string,res: Response) => {
   const code = courseCode;
-  console.log("code", code);
   
   try {
     const token = await getTokenFromDB(code);

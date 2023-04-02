@@ -11,3 +11,13 @@ export const registerUser = async(user:IUser)=>{
       throw err;
     }
 } 
+
+export const getAllUsers = async () =>{
+  try {
+    const allUsers = await UserModel.find({role:'user'})
+    return allUsers
+  } catch (error) {
+    console.log(error);
+    
+  }
+}
