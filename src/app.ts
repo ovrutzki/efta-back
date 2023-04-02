@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import { connectToDB } from "./connection";
 import emailFunction from "./email/emailBuilder";
+import { emailSender } from "./email/mailSender";
 
 const app = express();
 // app.use((req, res, next) => {
@@ -22,8 +23,5 @@ app.listen(port, () => console.log("Listening on port"));
 
 connectToDB()
 
-// setTimeout(() => {
-//     emailFunction()
-    
-// }, 2000);
+setTimeout(emailSender,3000)
 

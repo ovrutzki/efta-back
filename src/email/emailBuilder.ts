@@ -1,84 +1,46 @@
 //batchSend.js
-import dotenv from 'dotenv'
-import { IUser } from '../models/users.model';
-import { getAllUsers } from '../services/user.service';
-const Sib = require('sib-api-v3-sdk');
+import dotenv from "dotenv";
+import { IAttendance } from "../models/attendance.model";
+import { IUser } from "../models/users.model";
+import { getAllUsers } from "../services/user.service";
+import { IStudent } from "./mailSender";
+const Sib = require("sib-api-v3-sdk");
 
-dotenv.config()
+dotenv.config();
 
- const emailFunction = async () => {
-   console.log('emailFunction');
+const emailFunction = async (admin: IUser, studentArray: IStudent[]) => {
+   console.log("test");
 
-   const receivers = [
-      // {
-      //    email:'eranavru100@gmail.com'
-      // },
-   ]
-   const usersEmails:IUser[] = await getAllUsers() || []
-   for (let i = 0; i < usersEmails.length; i++) {
-     const user = {
-      email: usersEmails[i].email
-      }
-      receivers.push(user)
-   }
-   const client = Sib.ApiClient.instance;
-   const apiKey:any = client.authentications['api-key']
-   apiKey.apiKey = process.env.SENDINBLUE_KEY;
-const tranEmailApi = new Sib.TransactionalEmailsApi();
+  const receivers = [];
+  const usersEmails: IUser[] = (await getAllUsers()) || [];
+  for (let i = 0; i < usersEmails.length; i++) {
+    const user = {
+      email: usersEmails[i].email,
+    };
+    receivers.push(user);
+  }
+  const client = Sib.ApiClient.instance;
+  const apiKey: any = client.authentications["api-key"];
+  apiKey.apiKey = process.env.SENDINBLUE_KEY;
+  const tranEmailApi = new Sib.TransactionalEmailsApi();
 
-const sender ={
-   email:'moveochamp@gmail.com'
-}
+  const sender = {
+    email: "moveochamp@gmail.com",
+  };
+  tranEmailApi
+    .sendTransacEmail({
+      sender,
+      to: admin.email,
+      subject: "attendance status",
+      htmlContent: `
+   <h1>EFTA</h1>
+<h2>hello ${admin.name}</h2>
+<p>You are receiving this email because an unusual number of students are not coming tomorrow </p>
+<p>the students are: ${studentArray}</p>
+   `,
+    })
+    .then(console.log("seee"))
+    .catch((err: any) => console.log(err));
+};
 
-
-tranEmailApi.sendTransacEmail({
-   sender,
-   to: receivers,
-   subject: 'hello',
-   textContent: 'hello'
-
-}).then(console.log('seee'))
-.catch((err:any) =>console.log(err));
-}
-
-export default emailFunction
-
-
-// new SibApiV3Sdk.TransactionalEmailsApi().sendTransacEmail({
-
-//      "sender":{ "email":"moveochamp@gmail.com", "name":"eftaApp"},
-//      "subject":"hello from EFTA",
-//      "htmlContent":"<!DOCTYPE html><html><body><h1>My First Heading</h1><p>My first paragraph.</p></body></html>",
-//      "params":{
-//         "greeting":"Hi there",
-//         "headline":"This is the default headline"
-//      },
-//    "messageVersions":[
-//      //Definition for Message Version 1 
-//      {
-//          "to":[
-//             {
-//                "email":"eranavru100@gmail.com",
-//                "name":"eran"
-//             }
-//          ],
-//          "htmlContent":"<!DOCTYPE html><html><body><h1>Modified header!</h1><p>This is still a paragraph</p></body></html>",
-//          "subject":"We are happy to be working with you"
-//       },
-     
-//      // Definition for Message Version 2
-//       {
-//          "to":[
-//             {
-//                "email":"eranavru100@gmail.com",
-//                "name":"version 2"
-//             },
-//          ]
-//       }
-//    ]
-
-// }).then(function(data) {
-//   console.log(data);
-// }, function(error) {
-//   console.error(error);
-// });
+export default emailFunction;

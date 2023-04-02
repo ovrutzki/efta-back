@@ -18,7 +18,7 @@ export const updateAttendance = async (
   date: string,
   userEmail: string,
   status: number,
-  phone:string
+  phone: string
 ) => {
   try {
     //
@@ -29,7 +29,18 @@ export const updateAttendance = async (
     if (specificDay?.attendance?.find((obj) => obj.studentName === userEmail)) {
       for (let i = 0; i < specificDay.attendance.length; i++) {
         if (specificDay.attendance[i].studentName === userEmail) {
-          const specificDay = await AttendanceModel.findOneAndUpdate({date: date,courseCode: courseCode}, {$set:{attendance:{studentName:userEmail,phone:phone, status:status}}})
+          const specificDay = await AttendanceModel.findOneAndUpdate(
+            { date: date, courseCode: courseCode },
+            {
+              $set: {
+                attendance: {
+                  studentName: userEmail,
+                  phone: phone,
+                  status: status,
+                },
+              },
+            }
+          );
           break;
         }
       }
@@ -39,7 +50,15 @@ export const updateAttendance = async (
     } else {
       const specificDay = await AttendanceModel.findOneAndUpdate(
         { date: date, courseCode: courseCode },
-        { $push: { attendance: { studentName: userEmail,phone:phone, status: status } } }
+        {
+          $push: {
+            attendance: {
+              studentName: userEmail,
+              phone: phone,
+              status: status,
+            },
+          },
+        }
       );
 
       return specificDay;
@@ -89,27 +108,24 @@ export const allDaysAttendance = async (
       const specificCourse: IAttendance[] = await AttendanceModel.find({
         courseCode: courseCode,
       });
-      const userAttendanceArray = []
+      const userAttendanceArray = [];
       for (let i = 0; i < specificCourse.length; i++) {
         const dayAttendance = specificCourse[i].attendance;
         const userStatus = dayAttendance?.filter(
           (e: any) => e.studentName === email
         );
         const userDayAttendance = {
-          date:specificCourse[i].date,
-          userStatus:userStatus
-        }
-        userAttendanceArray.push(userDayAttendance)
+          date: specificCourse[i].date,
+          attendance: userStatus,
+          courseCode:courseCode
+        };
+        userAttendanceArray.push(userDayAttendance);
       }
-      console.log("userAttendanceArray",userAttendanceArray);
-      
+
       return userAttendanceArray;
     } else if (role === "admin") {
-      
-      const specificCourse: IAttendance[] = await AttendanceModel.find({
-        courseCode: courseCode,
-      });
-      
+      const specificCourse: IAttendance[] = await AttendanceModel.find({courseCode: courseCode});
+
       return specificCourse;
     }
   } catch (error) {
@@ -117,50 +133,60 @@ export const allDaysAttendance = async (
   }
 };
 
-export const updateCourseDaysFromMonday = async (dateArray:string[],courseCode:string) =>{
-    const daysInCollection:IAttendance[] = await AttendanceModel.find({courseCode:courseCode})
-    const daysFromMonday = dateArray
-    console.log(dateArray);
-    let arrayToAdd:string[] = []; 
-    const arrayToCollection = []
+export const updateCourseDaysFromMonday = async (
+  dateArray: string[],
+  courseCode: string
+) => {
+  const daysInCollection: IAttendance[] = await AttendanceModel.find({
+    courseCode: courseCode,
+  });
+  const daysFromMonday = dateArray;
+  let arrayToAdd: string[] = [];
+  const arrayToCollection = [];
   try {
-    if(daysInCollection.length > 0){
+    if (daysInCollection.length > 0) {
       for (let i = 0; i < daysInCollection.length; i++) {
-        arrayToAdd =  daysFromMonday.filter((date) => date !== daysInCollection[i].date)
+        arrayToAdd = daysFromMonday.filter(
+          (date) => date !== daysInCollection[i].date
+        );
       }
-    } else if (daysInCollection.length === 0){
-      arrayToAdd = daysFromMonday
+    } else if (daysInCollection.length === 0) {
+      arrayToAdd = daysFromMonday;
     }
 
     for (let j = 0; j < arrayToAdd.length; j++) {
       arrayToCollection.push({
-        courseCode:courseCode,
-        date:arrayToAdd[j],
-        attendance: [{}]
-      })
+        courseCode: courseCode,
+        date: arrayToAdd[j],
+        attendance: [{}],
+      });
     }
-   
-    console.log("arrayToAdd",arrayToCollection);
-    
+
     const _dayToAdd = await AttendanceModel.insertMany(arrayToCollection);
-  
-  } catch (error) {
-   console.log(error);
-    
-  }
-}
-
-
-export const addUserToAttendance = async (email:string,phone:string,courseCode:string) => {
-  try {
-    const courseDays = await AttendanceModel.updateMany({courseCode:courseCode},{$push:{attendance:{
-      studentName:email,
-      phone:phone,
-      status:0
-    }}})
-    
   } catch (error) {
     console.log(error);
-    
   }
-}
+};
+
+export const addUserToAttendance = async (
+  email: string,
+  phone: string,
+  courseCode: string
+) => {
+  try {
+    const courseDays = await AttendanceModel.updateMany(
+      { courseCode: courseCode },
+      {
+        $push: {
+          attendance: {
+            studentName: email,
+            phone: phone,
+            status: 0,
+          },
+        },
+      }
+    );
+  } catch (error) {
+    console.log(error);
+  }
+};
