@@ -21,7 +21,6 @@ app.listen(port, () => console.log("Listening on port"));
 
 connectToDB()
 
-setTimeout(emailSender,3000)
 
 // executing the function every evening:
 

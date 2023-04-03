@@ -27,25 +27,21 @@ export const updateAttendance = async (
       courseCode: courseCode,
     });
     if (specificDay?.attendance?.find((obj) => obj.studentName === userEmail)) {
-      for (let i = 0; i < specificDay.attendance.length; i++) {
-        if (specificDay.attendance[i].studentName === userEmail) {
-          const specificDay = await AttendanceModel.findOneAndUpdate(
-            { date: date, courseCode: courseCode },
-            {
-              $set: {
-                attendance: {
-                  studentName: userEmail,
-                  phone: phone,
-                  status: status,
-                },
-              },
-            }
-          );
-          break;
-        }
-      }
-      await specificDay.save();
-      console.log(specificDay.attendance);
+    //   for (let i = 0; i < specificDay.attendance.length; i++) {
+          // const specificDayToUpDate = await AttendanceModel.findOne(
+          //   { date: date, courseCode: courseCode });
+console.log("AAA", specificDay.attendance);
+
+            const newArray = specificDay?.attendance.filter((stu) => stu.studentName !== userEmail)
+            newArray?.push({studentName:userEmail, phone:phone, status:status})
+            console.log("newarray", newArray);
+            
+            const dayAttendance = await AttendanceModel.findOneAndUpdate( { date: date, courseCode: courseCode },{$set:{attendance:newArray}})
+          // break;
+        
+      // }
+      // await specificDay.save();
+      // console.log(specificDay.attendance);
       return specificDay;
     } else {
       const specificDay = await AttendanceModel.findOneAndUpdate(
